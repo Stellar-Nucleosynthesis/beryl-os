@@ -1,2 +1,5 @@
 iso/
 build/
+
+.vscode/
+.idea/
