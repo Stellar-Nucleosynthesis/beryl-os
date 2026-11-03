@@ -11,6 +11,7 @@ find_program(QEMU qemu-system-i386 REQUIRED)
 
 add_subdirectory(init)
 add_subdirectory(kernel)
+add_subdirectory(arch)
 
 add_executable(kernel_image
     $<TARGET_OBJECTS:init>
