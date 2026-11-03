@@ -2,6 +2,12 @@ ENTRY(init)
 
 SECTIONS {
     . = 0x00100000;
+
+    .multiboot ALIGN(4) :
+    {
+        KEEP(*(.multiboot))
+    }
+
     .text ALIGN (0x1000) :
     {
         *(.text)

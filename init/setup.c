@@ -1,8 +1,10 @@
-void kmain()
+#include <kmain.h>
+
+void setup()
 {
     unsigned char *fb = (unsigned char *) 0xB8000;
     fb[0] = 'A';
     fb[1] = 0x0E;
 
-    while (1) {}
+    kmain();
 }

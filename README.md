@@ -4,7 +4,7 @@ A simple x86 OS development project.
 
 ## Requirements
 
-- **GNU Make** - build automation
+- **CMake** - build system
 - **NASM** - assembler
 - **GCC** - compiler
 - **GNU binutils (`ld`)** - linker
@@ -15,33 +15,24 @@ A simple x86 OS development project.
 On Debian or Ubuntu, install the dependencies with:
 
 ```bash
-sudo apt install make nasm gcc binutils genisoimage qemu-system-x86 gdb
+sudo apt install cmake nasm gcc binutils genisoimage qemu-system-x86 gdb
 ```
 
 ## Building and running
 
-Build the bootable ISO image and run it in QEMU:
+Configure and build the project:
 
 ```bash
-make
+cmake -S . -B build
+cmake --build build
 ```
 
-This is equivalent to:
-
-```bash
-make iso run
-```
-
-To simply build the ISO image:
-
-```bash
-make iso
-```
+This builds the bootable ISO image.
 
 To run the image in QEMU:
 
 ```bash
-make run
+cmake --build build --target run
 ```
 
 ## Debugging
@@ -49,7 +40,7 @@ make run
 Start QEMU with the GDB debugging server enabled:
 
 ```bash
-make debug
+cmake --build build --target debug
 ```
 
 This starts QEMU with two options:
@@ -74,17 +65,19 @@ target remote :1234
 Remove generated build artifacts:
 
 ```bash
-make clean
+cmake --build build --target clean
 ```
 
-This deletes the `build/` directory.
+This removes generated build files but keeps the CMake configuration.
 
-## Make targets
+## Build targets
 
-| Target | Description                      |
-|---|----------------------------------|
-| `make` | Build the ISO image and boot it  |
-| `make iso` | Build the ISO image              |
-| `make run` | Launch QEMU normally             |
-| `make debug` | Launch QEMU paused for GDB       |
-| `make clean` | Remove generated build artifacts |
+| Target | Description |
+|---|---|
+| `cmake --build build` | Build the ISO image |
+| `cmake --build build --target init` | Build the init module |
+| `cmake --build build --target kernel` | Build the kernel module |
+| `cmake --build build --target kernel_image` | Link the kernel |
+| `cmake --build build --target run` | Launch QEMU normally |
+| `cmake --build build --target debug` | Launch QEMU paused for GDB |
+| `cmake --build build --target clean` | Remove generated build artifacts |
