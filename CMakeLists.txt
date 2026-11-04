@@ -11,10 +11,12 @@ find_program(QEMU qemu-system-i386 REQUIRED)
 
 add_subdirectory(init)
 add_subdirectory(kernel)
+add_subdirectory(arch)
 
 add_executable(kernel_image
     $<TARGET_OBJECTS:init>
     $<TARGET_OBJECTS:kernel>
+    $<TARGET_OBJECTS:arch>
 )
 
 set_target_properties(kernel_image PROPERTIES
@@ -23,12 +25,7 @@ set_target_properties(kernel_image PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
-target_link_options(kernel_image PRIVATE
-    -m32
-    -nostdlib
-    -no-pie
-    "LINKER:-T,${CMAKE_SOURCE_DIR}/init/link.ld"
-)
+target_link_libraries(kernel_image PRIVATE init_linker)
 
 set(ISO_DIR "${CMAKE_BINARY_DIR}/iso")
 set(ISO_IMAGE "${CMAKE_BINARY_DIR}/os.iso")

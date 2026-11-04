@@ -1,17 +1,18 @@
 add_library(kernel OBJECT
-    kmain.h
     kmain.c
 )
 
 target_compile_options(kernel PRIVATE
-    -m32
-    -ffreestanding
-    -nostdinc
-    -fno-builtin
-    -fno-stack-protector
-    -Wall
-    -Wextra
-    -Werror
+    $<$<COMPILE_LANGUAGE:C>:
+        -m32
+        -ffreestanding
+        -nostdinc
+        -fno-builtin
+        -fno-stack-protector
+        -Wall
+        -Wextra
+        -Werror
+    >
 )
 
 target_include_directories(kernel PUBLIC
