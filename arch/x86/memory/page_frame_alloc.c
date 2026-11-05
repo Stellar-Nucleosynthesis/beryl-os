@@ -1,7 +1,6 @@
 #include <memory/page_frame_alloc.h>
 #include <types/sysbool.h>
 
-__attribute__((aligned(PAGE_SIZE)))
 static u8 bitmap[PAGE_COUNT];
 
 static bool is_page_used(u32 index)

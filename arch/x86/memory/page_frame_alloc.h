@@ -8,7 +8,7 @@
 
 typedef struct
 {
-    phys_addr start;
+    phys_addr addr;
 } page_frame;
 
 static void mark_used_page(page_frame page);

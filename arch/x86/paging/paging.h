@@ -7,6 +7,8 @@ phys_addr get_page_dir_base();
 
 void set_page_dir_base(phys_addr page_dir);
 
-phys_addr resolve_addr(virt_addr addr);
+virt_addr phys_to_virt_direct(phys_addr addr);
+
+phys_addr resolve_addr(phys_addr page_dir_base, virt_addr addr);
 
 #endif
