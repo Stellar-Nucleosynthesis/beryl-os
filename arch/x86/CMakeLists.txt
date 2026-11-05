@@ -1,6 +1,8 @@
 add_library(arch OBJECT
     gdt/gdt.c
     gdt/load_gdt.asm
+    paging/paging.c
+    paging/page_dir_utils.asm
 )
 
 target_compile_options(arch PRIVATE
