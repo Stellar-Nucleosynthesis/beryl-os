@@ -11,4 +11,19 @@ typedef signed short        i16;
 typedef signed int          i32;
 typedef signed long long    i64;
 
+typedef struct
+{
+    u32 value;
+} virt_addr;
+
+typedef struct
+{
+    u32 value;
+} phys_addr;
+
+static inline virt_addr virt_addr_create(void* value)
+{
+    return (virt_addr){ .value = (u32) value };
+}
+
 #endif
