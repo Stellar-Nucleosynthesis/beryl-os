@@ -1,4 +1,5 @@
 #include <gdt/gdt.h>
+#include <paging/paging.h>
 
 const u32 NULL_DESR_OFFSET = 0x0;
 const gdt_entry NULL_DESCR = {
@@ -61,16 +62,6 @@ void encode_gdt_entry(u8* target, gdt_entry source)
 
 static u8 GDT[5 * 8];
 
-phys_addr get_gdt_addr()
-{
-    return (phys_addr){ .value = (u32) &GDT };
-}
-
-u16 get_gdt_size()
-{
-    return sizeof(GDT);
-}
-
 void setup_gdt()
 {
     encode_gdt_entry(GDT + NULL_DESR_OFFSET, NULL_DESCR);
@@ -79,7 +70,7 @@ void setup_gdt()
     encode_gdt_entry(GDT + USER_CODE_OFFSET, USER_CODE);
     encode_gdt_entry(GDT + USER_DATA_OFFSET, USER_DATA);
 
-    load_gdt(get_gdt_addr(), get_gdt_size());
+    load_gdt(virt_addr_create(GDT), sizeof(GDT));
     load_data_segment(KERNEL_DATA_OFFSET);
     load_code_segment(KERNEL_CODE_OFFSET);
 }

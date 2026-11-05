@@ -78,6 +78,7 @@ add_custom_target(iso ALL
 add_custom_target(run
     COMMAND ${QEMU}
         -drive format=raw,file=${ISO_IMAGE},media=cdrom
+        -no-reboot
         -boot d
 
     DEPENDS iso
@@ -87,6 +88,7 @@ add_custom_target(run
 add_custom_target(debug
     COMMAND ${QEMU}
         -drive format=raw,file=${ISO_IMAGE},media=cdrom
+        -no-reboot
         -boot d
         -s
         -S
