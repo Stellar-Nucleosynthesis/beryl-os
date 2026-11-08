@@ -1,8 +1,12 @@
 add_library(arch OBJECT
     gdt/gdt.c
     gdt/load_gdt.asm
+
     paging/paging.c
-    paging/page_dir_utils.asm
+    paging/paging_utils.asm
+
+    memory/page_frame_alloc.c
+    memory/page_frame_mapper.c
 )
 
 target_compile_options(arch PRIVATE
@@ -17,6 +21,8 @@ target_compile_options(arch PRIVATE
         -Werror
     >
 )
+
+target_link_libraries(arch PRIVATE common)
 
 target_include_directories(arch PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}

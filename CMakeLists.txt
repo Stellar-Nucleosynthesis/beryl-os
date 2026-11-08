@@ -12,6 +12,7 @@ find_program(QEMU qemu-system-i386 REQUIRED)
 add_subdirectory(init)
 add_subdirectory(kernel)
 add_subdirectory(arch)
+add_subdirectory(common)
 
 add_executable(kernel_image
     $<TARGET_OBJECTS:init>
@@ -25,7 +26,7 @@ set_target_properties(kernel_image PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
-target_link_libraries(kernel_image PRIVATE init_linker)
+target_link_libraries(kernel_image PRIVATE init_linker common)
 
 set(ISO_DIR "${CMAKE_BINARY_DIR}/iso")
 set(ISO_IMAGE "${CMAKE_BINARY_DIR}/os.iso")
