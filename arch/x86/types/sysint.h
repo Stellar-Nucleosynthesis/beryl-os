@@ -1,9 +1,8 @@
 #ifndef SYSINT_H
 #define SYSINT_H
 
-#include <types/sysbool.h>
-
-#define NULL 0
+#include <types/bool.h>
+#include <types/numeric.h>
 
 typedef unsigned char       u8;
 typedef unsigned short      u16;

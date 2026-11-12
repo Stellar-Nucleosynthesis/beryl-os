@@ -1,5 +1,5 @@
-#ifndef SYSBOOL_H
-#define SYSBOOL_H
+#ifndef BOOL_H
+#define BOOL_H
 
 typedef _Bool bool;
 

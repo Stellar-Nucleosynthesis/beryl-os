@@ -21,6 +21,7 @@ SECTIONS
 
     __kernel_physical_start = ALIGN(., 0x1000);
     . = __kernel_physical_start + KERNEL_VIRTUAL_BASE;
+    __kernel_virtual_start = .;
 
     .text ALIGN(0x1000) : AT(ADDR(.text) - KERNEL_VIRTUAL_BASE)
     {

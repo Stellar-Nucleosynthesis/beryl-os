@@ -3,11 +3,11 @@
 
 #include <paging/paging.h>
 
-void mark_used_page(page_frame page);
+void mark_used_page_frame(page_frame page);
 
-page_frame alloc_page();
+page_frame alloc_page_frame();
 
-void free_page(page_frame page);
+void free_page_frame(page_frame page);
 
 void init_page_frame_alloc();
 

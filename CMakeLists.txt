@@ -18,6 +18,7 @@ add_executable(kernel_image
     $<TARGET_OBJECTS:init>
     $<TARGET_OBJECTS:kernel>
     $<TARGET_OBJECTS:arch>
+    $<TARGET_OBJECTS:common>
 )
 
 set_target_properties(kernel_image PROPERTIES

@@ -13,7 +13,7 @@ virt_page map_temp_page(page_frame page)
     virt_page temp_page = { { TEMP_PAGE_ADDR } };
     u32* pte = (u32*) temp_page_table;
     if (*pte & PAGE_PRESENT)
-        return invalid_virtual_page();
+        return invalid_virt_page();
     *pte = page.start.value | PAGE_FLAGS;
     invalidate_page(temp_page);
     return temp_page;
@@ -21,7 +21,7 @@ virt_page map_temp_page(page_frame page)
 
 void unmap_temp_page(virt_page page)
 {
-    if (is_virtual_page_invalid(page))
+    if (is_virt_page_invalid(page))
         return;
     u32* pte = (u32*) temp_page_table;
     *pte = 0;
@@ -49,7 +49,7 @@ u32 get_page_table_entry(page_frame page_table, virt_addr addr)
 void set_page_dir_entry(page_frame page_dir, virt_addr addr, u32 value)
 {
     virt_page virt_dir = map_temp_page(page_dir);
-    if (is_virtual_page_invalid(virt_dir))
+    if (is_virt_page_invalid(virt_dir))
         return;
     u32* directory = (u32*) virt_dir.start.value;
     directory[PAGE_DIR_INDEX(addr)] = value;
@@ -59,7 +59,7 @@ void set_page_dir_entry(page_frame page_dir, virt_addr addr, u32 value)
 void set_page_table_entry(page_frame page_table, virt_addr addr, u32 value)
 {
     virt_page virt_table = map_temp_page(page_table);
-    if (is_virtual_page_invalid(virt_table))
+    if (is_virt_page_invalid(virt_table))
         return;
     u32* table = (u32*) virt_table.start.value;
     table[PAGE_TABLE_INDEX(addr)] = value;
@@ -98,17 +98,17 @@ page_frame map_page_frame(page_frame target_pd, virt_page page)
         return (page_frame) { resolve_addr(target_pd, page.start) };
     }
 
-    page_frame frame = alloc_page();
+    page_frame frame = alloc_page_frame();
     if (is_page_frame_invalid(frame))
         return invalid_page_frame();
 
     page_frame page_table = invalid_page_frame();
     if (!(pde & PAGE_PRESENT))
     {
-        page_table = alloc_page();
+        page_table = alloc_page_frame();
         if(is_page_frame_invalid(page_table))
         {
-            free_page(frame);
+            free_page_frame(frame);
             return invalid_page_frame();
         }
         zero_out_page_frame(page_table);
@@ -122,13 +122,33 @@ page_frame map_page_frame(page_frame target_pd, virt_page page)
     u32 pte = get_page_table_entry(page_table, page.start);
     if (pte & PAGE_PRESENT)
     {
-        free_page(frame);
+        free_page_frame(frame);
         return invalid_page_frame();
     }
 
     set_page_table_entry(page_table, page.start, page.start.value | PAGE_FLAGS);
     invalidate_page(page);
     return frame;
+}
+
+status unmap_page_frame(page_frame target_pd, virt_page page)
+{
+    if (is_virt_page_invalid(page))
+        return STATUS_INVALID_ARGUMENT;
+    u32 pde = get_page_dir_entry(target_pd, page.start);
+    if (!(pde & PAGE_PRESENT) || (pde & PAGE_SIZE_4MB))
+        return STATUS_INVALID_ARGUMENT;
+
+    page_frame page_table = { { pde & PAGE_ADDR_MASK } };
+    u32 pte = get_page_table_entry(page_table, page.start);
+    if (!(pte & PAGE_PRESENT))
+        return STATUS_INVALID_ARGUMENT;
+
+    page_frame frame = { { pte & PAGE_ADDR_MASK } };
+    set_page_table_entry(page_table, page.start, 0);
+    invalidate_page(page);
+    free_page_frame(frame);
+    return STATUS_SUCCESS;
 }
 
 void init_page_frame_mapper(page_frame kernel_pd)
