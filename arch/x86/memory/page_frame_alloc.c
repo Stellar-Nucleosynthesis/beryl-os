@@ -43,3 +43,9 @@ void free_page(page_frame page)
     u32 index = addr.value / PAGE_SIZE;
     set_page_free(index);
 }
+
+void init_page_frame_alloc()
+{
+    for (u32 i = 0; i < sizeof(bitmap); i++)
+        bitmap[i] = 0xFF;
+}

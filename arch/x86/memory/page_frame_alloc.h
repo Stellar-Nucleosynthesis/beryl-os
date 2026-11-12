@@ -9,4 +9,6 @@ page_frame alloc_page();
 
 void free_page(page_frame page);
 
+void init_page_frame_alloc();
+
 #endif

@@ -133,9 +133,6 @@ page_frame map_page_frame(page_frame target_pd, virt_page page)
 
 void init_page_frame_mapper(page_frame kernel_pd)
 {
-    for (u32 i = 0; i < 1024; i++)
-        mark_used_page((page_frame) { (phys_addr) { i * PAGE_SIZE } });
-
     u32* directory = (u32*) phys_to_virt_direct(kernel_pd.start).value;
     phys_addr temp_table_addr = { ((u32) temp_page_table) - KERNEL_OFFSET };
     directory[TEMP_PAGE_DIR_INDEX] = temp_table_addr.value | PAGE_FLAGS;

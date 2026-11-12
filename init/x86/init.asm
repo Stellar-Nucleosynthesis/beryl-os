@@ -26,9 +26,19 @@ kernel_stack:
     resb KERNEL_STACK_SIZE
 kernel_stack_end:
 
+boot_multiboot_magic:
+    resd 1
+
+boot_multiboot_info:
+    resd 1
+
 section .boot.text
 init:
     cli
+
+    mov [boot_multiboot_magic], eax
+    mov [boot_multiboot_info], ebx
+
     mov esp, kernel_stack_end
 
     mov dword [boot_page_directory], 0x00000083
@@ -52,6 +62,9 @@ higher_half:
     mov esp, kernel_stack_end + KERNEL_VIRTUAL_BASE
     mov dword [boot_page_directory + KERNEL_VIRTUAL_BASE], 0
     invlpg [0]
+
+    push dword [boot_multiboot_info + KERNEL_VIRTUAL_BASE]
+    push dword [boot_multiboot_magic + KERNEL_VIRTUAL_BASE]
 
     mov eax, setup
     call eax
