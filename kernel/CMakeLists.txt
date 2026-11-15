@@ -1,5 +1,6 @@
 add_library(kernel OBJECT
     kmain.c
+    memory/kalloc.c
 )
 
 target_compile_options(kernel PRIVATE
@@ -17,4 +18,9 @@ target_compile_options(kernel PRIVATE
 
 target_include_directories(kernel PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_libraries(kernel PRIVATE
+    common
+    hal
 )

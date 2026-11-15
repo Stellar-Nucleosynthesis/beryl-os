@@ -126,7 +126,7 @@ page_frame map_page_frame(page_frame target_pd, virt_page page)
         return invalid_page_frame();
     }
 
-    set_page_table_entry(page_table, page.start, page.start.value | PAGE_FLAGS);
+    set_page_table_entry(page_table, page.start, frame.start.value | PAGE_FLAGS);
     invalidate_page(page);
     return frame;
 }
@@ -136,8 +136,11 @@ status unmap_page_frame(page_frame target_pd, virt_page page)
     if (is_virt_page_invalid(page))
         return STATUS_INVALID_ARGUMENT;
     u32 pde = get_page_dir_entry(target_pd, page.start);
-    if (!(pde & PAGE_PRESENT) || (pde & PAGE_SIZE_4MB))
+    if (!(pde & PAGE_PRESENT))
         return STATUS_INVALID_ARGUMENT;
+
+    if ((pde & PAGE_SIZE_4MB))
+        return STATUS_SUCCESS;
 
     page_frame page_table = { { pde & PAGE_ADDR_MASK } };
     u32 pte = get_page_table_entry(page_table, page.start);

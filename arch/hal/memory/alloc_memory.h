@@ -1,7 +1,6 @@
 #ifndef ALLOC_MEMORY_H
 #define ALLOC_MEMORY_H
 
-#include <types/numeric.h>
 #include <types/bool.h>
 
 typedef struct

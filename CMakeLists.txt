@@ -27,7 +27,7 @@ set_target_properties(kernel_image PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
-target_link_libraries(kernel_image PRIVATE init_linker common)
+target_link_libraries(kernel_image PRIVATE init_linker common hal)
 
 set(ISO_DIR "${CMAKE_BINARY_DIR}/iso")
 set(ISO_IMAGE "${CMAKE_BINARY_DIR}/os.iso")
@@ -82,6 +82,7 @@ add_custom_target(run
         -drive format=raw,file=${ISO_IMAGE},media=cdrom
         -no-reboot
         -boot d
+        -serial file:serial.log
 
     DEPENDS iso
     USES_TERMINAL
