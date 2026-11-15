@@ -29,6 +29,12 @@ typedef struct
     virt_addr start;
 } virt_page;
 
+typedef struct
+{
+    virt_addr start;
+    int size;
+} virt_page_block;
+
 page_frame get_page_dir();
 
 void set_page_dir(page_frame page_dir);
@@ -41,8 +47,12 @@ page_frame invalid_page_frame();
 
 bool is_page_frame_invalid(page_frame pf);
 
-virt_page invalid_virtual_page();
+virt_page invalid_virt_page();
 
-bool is_virtual_page_invalid(virt_page page);
+bool is_virt_page_invalid(virt_page page);
+
+virt_page_block invalid_virt_page_block();
+
+bool is_virt_page_block_invalid(virt_page_block block);
 
 #endif

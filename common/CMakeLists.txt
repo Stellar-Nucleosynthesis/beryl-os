@@ -1,6 +1,8 @@
-add_library(common INTERFACE)
+add_library(common OBJECT
+    error/panic.c
+)
 
-target_compile_options(common INTERFACE
+target_compile_options(common PRIVATE
     $<$<COMPILE_LANGUAGE:C>:
         -m32
         -ffreestanding
@@ -13,6 +15,6 @@ target_compile_options(common INTERFACE
     >
 )
 
-target_include_directories(common INTERFACE
+target_include_directories(common PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )

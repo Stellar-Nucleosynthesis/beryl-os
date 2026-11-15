@@ -21,6 +21,7 @@ target_link_libraries(init PRIVATE
     kernel
     arch
     common
+    hal
 )
 
 set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/link.ld)
